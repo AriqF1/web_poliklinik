@@ -26,25 +26,26 @@
                         <div class="card-header">
                             <h3 class="card-title">Form Tambah Obat</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form>
+                        <form action="{{ route('dokter.obat.store') }}" method="POST">
+                            @csrf
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="nama_obat">Nama Obat</label>
-                                    <input type="text" class="form-control" id="nama_obat" placeholder="Masukkan nama obat">
+                                    <input type="text" class="form-control" id="nama_obat" name="nama_obat"
+                                        placeholder="Masukkan nama obat" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="kemasan">Kemasan</label>
-                                    <input type="text" class="form-control" id="kemasan"
-                                        placeholder="Masukkan kemasan obat">
+                                    <input type="text" class="form-control" id="kemasan" name="kemasan"
+                                        placeholder="Masukkan kemasan obat" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="harga">Harga</label>
-                                    <input type="number" class="form-control" id="harga" placeholder="Masukkan harga obat">
+                                    <input type="number" class="form-control" id="harga" name="harga"
+                                        placeholder="Masukkan harga obat" required>
                                 </div>
                             </div>
-                            <div class="card-footer text-right ">
+                            <div class="card-footer text-right">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
@@ -57,7 +58,6 @@
                         <div class="card-header">
                             <h3 class="card-title">Daftar Obat</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
                             <table class="table table-hover text-nowrap">
                                 <thead>
@@ -66,7 +66,6 @@
                                         <th>Nama Obat</th>
                                         <th>Kemasan</th>
                                         <th>Harga</th>
-                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +75,10 @@
                                             <td>{{ $obat->nama_obat }}</td>
                                             <td>{{ $obat->kemasan }}</td>
                                             <td>{{ $obat->harga }}</td>
-                                            <td><span>Edit</span> <span>Delete</span></td>
+                                            <td><a href="{{ route('dokter.obat.edit', $obat->id) }}"
+                                                    class="btn btn-primary">Edit</a>
+                                                <button class="btn btn-danger">Delete</button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
