@@ -59,3 +59,4 @@ class User extends Authenticatable
         return $this->hasMany(Periksa::class, 'id_dokter', 'id');
     }
 }
+
