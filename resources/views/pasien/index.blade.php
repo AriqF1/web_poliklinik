@@ -1,6 +1,33 @@
 @extends('layout.app')
 
 @section('title', 'Dashboard Pasien')
+@section('dashboard', 'Pasien')
+@section('sidebar')
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item menu-open">
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="./index.html" class="nav-link active">
+                        <i class="fa-solid fa-house"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./index3.html" class="nav-link">
+                        <i class="fa-solid fa-hospital"></i>
+                        <p>Periksa</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="./index3.html" class="nav-link">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+@endsection
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -11,11 +38,11 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Dashboard v1</li>
+                        <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <section class="content">

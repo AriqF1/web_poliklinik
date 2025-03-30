@@ -26,26 +26,31 @@
                         <div class="card-header">
                             <h3 class="card-title">Form Tambah Obat</h3>
                         </div>
-                        <form action="{{ route('dokter.obat.edit') }}" method="POST">
+                        <form action="{{ route('dokter.obat.update', $obats->id) }}" method="POST">
                             @csrf
                             @method('PUT')
 
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="nama_obat">Nama Obat</label>
-                                    <input type="text" class="form-control" value="{{ $obat->nama_obat }}" required>
+                                    <input type="text" class="form-control" name="nama_obat" value="{{ $obats->nama_obat }}"
+                                        required>
+
                                 </div>
                                 <div class="form-group">
                                     <label for="kemasan">Kemasan</label>
-                                    <input type="text" class="form-control" value="{{ $obat->kemasan }}" required>
+                                    <input type="text" class="form-control" name="kemasan" value="{{ $obats->kemasan }}"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="harga">Harga</label>
-                                    <input type="number" class="form-control" value="{{ $obat->harga }}" required>
+                                    <input type="number" class="form-control" name="harga" value="{{ $obats->harga }}"
+                                        required>
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{{ route('dokter.obat') }}" class="btn btn-danger">Batal</a>
                             </div>
                         </form>
                     </div>
