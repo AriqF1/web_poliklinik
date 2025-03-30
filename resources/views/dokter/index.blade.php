@@ -7,19 +7,19 @@
         <li class="nav-item menu-open">
             <ul class="nav nav-treeview">
                 <li class="nav-item">
-                    <a href="./index.html" class="nav-link active">
+                    <a href="{{ route('dokter.index') }}" class="nav-link active">
                         <i class="fa-solid fa-house"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./index2.html" class="nav-link">
+                    <a href="{{ route('dokter.memeriksa') }}" class="nav-link">
                         <i class="fa-solid fa-stethoscope"></i>
                         <p>Memeriksa</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
+                    <a href="{{ route('dokter.obat') }}" class="nav-link">
                         <i class="fa-solid fa-capsules"></i>
                         <p>Obat</p>
                     </a>
