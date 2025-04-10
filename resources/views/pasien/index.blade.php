@@ -13,7 +13,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
+                    <a href="{{Route('pasien.periksa')}}" class="nav-link">
                         <i class="fa-solid fa-hospital"></i>
                         <p>Periksa</p>
                     </a>
