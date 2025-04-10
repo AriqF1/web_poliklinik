@@ -1,32 +1,28 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Periksa;
 use App\Models\User;
-use App\Models\Obat;
 use App\Models\DetailPeriksa;
 
-class MemeriksaController extends Controller
+class PeriksaController extends Controller
 {
     public function index()
     {
-        $periksas = Periksa::latest()->paginate(10);
-        return view('dokter.memeriksa.index', compact('periksas'));
+        $periksas = Periksa::where('id_pasien', auth()->id())->latest()->paginate(10);
+        return view('pasien.periksa.index', compact('periksas'));
     }
 
     public function create()
     {
-        $pasiens = User::where('role', 'pasien')->get();
-        $obats = Obat::all();
-        return view('dokter.memeriksa.create', compact('pasiens', 'obats'));
+        $dokters = User::where('role', 'dokter')->get();
+        return view('pasien.periksa.create', compact('dokters'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'id_pasien' => 'required|exists:users,id',
             'tgl_periksa' => 'required|date',
             'catatan' => 'required|string',
             'obats' => 'required|array',
@@ -38,8 +34,8 @@ class MemeriksaController extends Controller
         $total = $biaya_periksa + $total_obat;
 
         $periksa = Periksa::create([
-            'id_pasien' => $request->id_pasien,
-            'id_dokter' => auth()->id(),
+            'id_pasien' => auth()->id(),
+            'id_dokter' => null, // bisa null dulu
             'tgl_periksa' => $request->tgl_periksa,
             'catatan' => $request->catatan,
             'biaya_periksa' => $total,
@@ -52,6 +48,7 @@ class MemeriksaController extends Controller
             ]);
         }
 
-        return redirect()->route('dokter.memeriksa.index')->with('success', 'Data pemeriksaan berhasil disimpan.');
+        return redirect()->route('pasien.periksa')->with('success', 'Permintaan pemeriksaan berhasil dikirim.');
     }
 }
+
