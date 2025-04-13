@@ -6,18 +6,19 @@ use App\Http\Controllers\MemeriksaController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PeriksaController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
-Route::get('/', function () {
-    return view('layout.app');
-});
+Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
 
 // Dashboard Pasien
 Route::prefix('pasien')->name('pasien.')->group(function () {
 
     // Dashboard Pasien
     Route::get('/dashboard', [PasienController::class, 'index'])->name('index');
-
-
     Route::get('/periksa', [PeriksaController::class, 'index'])->name('periksa');
     Route::get('/periksa/create', [PeriksaController::class, 'create'])->name('periksa.create');
     Route::post('/periksa', [PeriksaController::class, 'store'])->name('periksa.store');
