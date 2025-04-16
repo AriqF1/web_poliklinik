@@ -5,19 +5,27 @@ use Illuminate\Http\Request;
 use App\Models\Periksa;
 use App\Models\User;
 use App\Models\DetailPeriksa;
+use App\Models\Obat;
+use Illuminate\Support\Facades\Auth;
 
 class PeriksaController extends Controller
 {
     public function index()
     {
-        $periksas = Periksa::where('id_pasien', auth()->id())->latest()->paginate(10);
-        return view('pasien.periksa.index', compact('periksas'));
+        $pasien = auth()->user();
+        $periksaIds = Periksa::where('id_pasien', $pasien->id)->pluck('id');
+        $obats = DetailPeriksa::whereIn('id_periksa', $periksaIds)->with('obat')->get();
+        $periksas = Periksa::where('id_pasien', $pasien->id)->latest()->paginate(10);
+
+        return view('pasien.periksa.index', compact('periksas', 'pasien', 'obats'));
     }
+
 
     public function create()
     {
+        $pasien = auth()->user();
         $dokters = User::where('role', 'dokter')->get();
-        return view('pasien.periksa.create', compact('dokters'));
+        return view('pasien.periksa.create', compact('dokters', 'pasien'));
     }
 
     public function store(Request $request)
@@ -25,28 +33,18 @@ class PeriksaController extends Controller
         $request->validate([
             'tgl_periksa' => 'required|date',
             'catatan' => 'required|string',
-            'obats' => 'required|array',
-            'obats.*' => 'exists:obats,id',
+            'id_dokter' => 'required|exists:users,id',
         ]);
 
         $biaya_periksa = 150000;
-        $total_obat = Obat::whereIn('id', $request->obats)->sum('harga');
-        $total = $biaya_periksa + $total_obat;
 
         $periksa = Periksa::create([
             'id_pasien' => auth()->id(),
-            'id_dokter' => null, // bisa null dulu
+            'id_dokter' => $request->id_dokter,
             'tgl_periksa' => $request->tgl_periksa,
             'catatan' => $request->catatan,
-            'biaya_periksa' => $total,
+            'biaya_periksa' => $biaya_periksa,
         ]);
-
-        foreach ($request->obats as $id_obat) {
-            DetailPeriksa::create([
-                'id_periksa' => $periksa->id,
-                'id_obat' => $id_obat,
-            ]);
-        }
 
         return redirect()->route('pasien.periksa')->with('success', 'Permintaan pemeriksaan berhasil dikirim.');
     }
