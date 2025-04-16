@@ -7,6 +7,7 @@ use App\Models\Periksa;
 use App\Models\User;
 use App\Models\Obat;
 use App\Models\DetailPeriksa;
+use Illuminate\Support\Facades\Auth;
 
 class MemeriksaController extends Controller
 {
@@ -16,11 +17,14 @@ class MemeriksaController extends Controller
         return view('dokter.memeriksa.index', compact('periksas'));
     }
 
-    public function create()
+    public function create($id = null)
     {
-        $pasiens = User::where('role', 'pasien')->get();
         $obats = Obat::all();
-        return view('dokter.memeriksa.create', compact('pasiens', 'obats'));
+        $dokter = auth()->user();
+        if ($id) {
+            $periksas = Periksa::findOrFail($id);
+        }
+        return view('dokter.memeriksa.create', compact('periksas', 'obats', 'dokter'));
     }
 
     public function store(Request $request)
@@ -52,6 +56,6 @@ class MemeriksaController extends Controller
             ]);
         }
 
-        return redirect()->route('dokter.memeriksa.index')->with('success', 'Data pemeriksaan berhasil disimpan.');
+        return redirect()->route('dokter.memeriksa')->with('success', 'Data pemeriksaan berhasil disimpan.');
     }
 }

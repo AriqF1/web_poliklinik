@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Obat;
+use Illuminate\Support\Facades\Auth;
 
 class ObatController extends Controller
 {
