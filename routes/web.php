@@ -15,6 +15,7 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
+
 // =========================
 // Dashboard PASIEN
 // =========================
@@ -26,6 +27,8 @@ Route::prefix('pasien')
         Route::get('/periksa', [PeriksaController::class, 'index'])->name('periksa');
         Route::get('/periksa/create', [PeriksaController::class, 'create'])->name('periksa.create');
         Route::post('/periksa', [PeriksaController::class, 'store'])->name('periksa.store');
+        // Route untuk logout pasien
+        Route::post('/pasien/logout', [PasienController::class, 'logout'])->name('logout');
     });
 
 // =========================
@@ -38,7 +41,7 @@ Route::prefix('dokter')
         Route::get('/dashboard', [DokterController::class, 'index'])->name('index');
 
         Route::get('/memeriksa', [MemeriksaController::class, 'index'])->name('memeriksa');
-        Route::get('/memeriksa/create', [MemeriksaController::class, 'create'])->name('memeriksa.create');
+        Route::get('/memeriksa/create/{id?}', [MemeriksaController::class, 'create'])->name('memeriksa.create');
         Route::post('/memeriksa', [MemeriksaController::class, 'store'])->name('memeriksa.store');
 
         Route::get('/obat', [ObatController::class, 'index'])->name('obat');
@@ -47,4 +50,7 @@ Route::prefix('dokter')
         Route::get('/obat/{id}/edit', [ObatController::class, 'edit'])->name('obat.edit');
         Route::put('/obat/{id}', [ObatController::class, 'update'])->name('obat.update');
         Route::delete('/obat/{id}', [ObatController::class, 'destroy'])->name('obat.destroy');
+
+        // Route untuk logout dokter
+        Route::post('/dokter/logout', [DokterController::class, 'logout'])->name('logout');
     });
