@@ -1,67 +1,49 @@
+@php
+    $showTables = false;
+    $showFullscreen = true;
+@endphp
+
 @extends('layout.app')
 
 @section('title', 'Data Pemeriksaan')
 @section('dashboard', 'Dokter')
-@section('sidebar')
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="{{ route('dokter.index') }}" class="nav-link ">
-                        <i class="fa-solid fa-house"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('dokter.memeriksa') }}" class="nav-link active">
-                        <i class="fa-solid fa-stethoscope"></i>
-                        <p>Memeriksa</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('dokter.obat') }}" class="nav-link">
-                        <i class="fa-solid fa-capsules"></i>
-                        <p>Obat</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <p>Logout</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-@endsection
-@section('content')
+@section('fullscreen')
     <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="card-title">Daftar Pemeriksaan</h3>
-            <a href="{{ route('dokter.memeriksa.create') }}" class="btn btn-primary float-right">Tambah Pemeriksaan</a>
         </div>
         <div class="card-body">
-            <table class="table">
-                <thead>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
                     <tr>
                         <th>Pasien</th>
                         <th>Tanggal</th>
                         <th>Catatan</th>
                         <th>Total Biaya</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($periksas as $periksa)
+                    @forelse ($periksas as $periksa)
                         <tr>
                             <td>{{ $periksa->pasien->nama }}</td>
-                            <td>{{ $periksa->tgl_periksa }}</td>
-                            <td>{{ $periksa->catatan }}</td>
+                            <td>{{ \Carbon\Carbon::parse($periksa->tgl_periksa)->format('d M Y') }}</td>
+                            <td>{{ $periksa->catatan ?? '-' }}</td>
                             <td>Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
+                            <td>
+                                <a href="{{ route('dokter.memeriksa.create', ['id' => $periksa->id]) }}"
+                                    class="btn btn-sm btn-success">
+                                    <i class="fas fa-notes-medical"></i> Mulai Periksa
+                                </a>
+                            </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center">Belum ada data pemeriksaan.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-            {{ $periksas->links() }}
         </div>
     </div>
 @endsection
