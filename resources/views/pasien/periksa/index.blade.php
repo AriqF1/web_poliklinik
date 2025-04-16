@@ -2,58 +2,59 @@
 
 @section('title', 'Riwayat Pemeriksaan')
 @section('dashboard', 'Pasien')
-@section('sidebar')
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="./index.html" class="nav-link ">
-                        <i class="fa-solid fa-house"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{Route('pasien.periksa')}}" class="nav-link active">
-                        <i class="fa-solid fa-hospital"></i>
-                        <p>Periksa</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <p>Logout</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-@endsection
-@section('content')
-<div class="container mt-4">
-    <div class="d-flex justify-content-between mb-3">
-        <h4>Riwayat Pemeriksaan Anda</h4>
-        <a href="{{ route('pasien.periksa.create') }}" class="btn btn-primary">Buat Janji Periksa</a>
+@section('header')
+    <h1>Dashboard Pasien</h1>
+    <div class="user-info">
+        <div class="user-avatar">
+            <i class="fas fa-user-md"></i>
+        </div>
+        <div class="user-name">{{ $pasien->nama }}</div>
     </div>
-
-    <table class="table table-bordered">
+@endsection
+@section('table')
+    <div class="table-header">
+        <div class="table-title">Riwayat Periksamu</div>
+        <a href="{{ Route('pasien.periksa.create') }}" class="view-all">Buat Janji Periksa</a>
+    </div>
+    <table>
         <thead>
             <tr>
+                <th>Nama</th>
                 <th>Tanggal</th>
-                <th>Catatan</th>
-                <th>Total Biaya</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($periksas as $periksa)
                 <tr>
+                    <td>{{ $periksa->pasien->nama}}</td>
                     <td>{{ $periksa->tgl_periksa }}</td>
-                    <td>{{ $periksa->catatan }}</td>
-                    <td>Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
+                    <td><span class="status pending">Menunggu</span></td>
                 </tr>
             @endforeach
         </tbody>
     </table>
-
-    {{ $periksas->links() }}
-</div>
+@endsection
+@section('schedule')
+    <div class="table-header">
+        <div class="table-title">Riwayat Pemberian Obat</div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Obat</th>
+                <th>Kemasan</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($obats as $obat)
+                <tr>
+                    <td>{{ $obat->nama_obat }}</td>
+                    <td>{{ $obat->kemasan  }}</td>
+                    <td>{{ 'Rp ' . number_format($obat->harga, 0, ',', '.') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 @endsection

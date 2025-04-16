@@ -1,87 +1,78 @@
+@php
+    $showTables = false;
+    $showFullscreen = true;
+@endphp
+
 @extends('layout.app')
 
 @section('title', 'Buat Pemeriksaan')
 @section('dashboard', 'Pasien')
-@section('sidebar')
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item menu-open">
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                    <a href="./index.html" class="nav-link ">
-                        <i class="fa-solid fa-house"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{Route('pasien.periksa')}}" class="nav-link active">
-                        <i class="fa-solid fa-hospital"></i>
-                        <p>Periksa</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="./index3.html" class="nav-link">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <p>Logout</p>
-                    </a>
-                </li>
-            </ul>
-        </li>
-    </ul>
-@endsection
-@section('content')
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h4>Buat Janji Pemeriksaan</h4>
+@section('fullscreen')
+    <div class="fullscreen-form">
+        <div class="form-header">
+            <h2><i class="fas fa-calendar-plus"></i> Buat Janji Pemeriksaan</h2>
+            <p class="form-subtitle">Silakan isi formulir di bawah untuk membuat janji pemeriksaan dengan dokter</p>
         </div>
-        <div class="card-body">
+
+        <div class="form-container">
             <form action="{{ route('pasien.periksa.store') }}" method="POST">
                 @csrf
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="id_dokter">Pilih Dokter</label>
+                            <div class="input-wrapper">
+                                <select name="id_dokter" id="id_dokter" required>
+                                    <option value="">-- Pilih Dokter --</option>
+                                    @foreach ($dokters as $dokter)
+                                        <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
+                                    @endforeach
+                                </select>
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                        </div>
 
-                <div class="form-group mb-3">
-                    <label for="id_dokter">Pilih Dokter</label>
-                    <select name="id_dokter" class="form-control" required>
-                        <option value="">-- Pilih Dokter --</option>
-                        @foreach ($dokters as $dokter)
-                            <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
-                        @endforeach
-                    </select>
+                        <div class="form-group">
+                            <label for="tgl_periksa">Tanggal Pemeriksaan</label>
+                            <div class="input-wrapper">
+                                <input type="date" name="tgl_periksa" id="tgl_periksa" required>
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="catatan">Catatan</label>
+                            <div class="input-wrapper">
+                                <textarea name="catatan" id="catatan" rows="5" required></textarea>
+                                <i class="fas fa-comment-medical"></i>
+                            </div>
+                            <p class="input-help">Jelaskan keluhan atau alasan kunjungan Anda secara detail</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="tgl_periksa">Tanggal Pemeriksaan</label>
-                    <input type="date" name="tgl_periksa" class="form-control" required>
-                </div>
+                <div class="form-row">
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label>Biaya Pemeriksaan</label>
+                            <div class="input-wrapper fee">
+                                <input type="text" value="Rp 150.000" readonly>
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <p class="input-help">Biaya konsultasi standar (tidak termasuk tindakan medis tambahan)</p>
+                        </div>
+                    </div>
 
-                <div class="form-group mb-3">
-                    <label for="catatan">Catatan</label>
-                    <textarea name="catatan" class="form-control" rows="3" required></textarea>
+                    <div class="form-column form-action">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-check-circle"></i>
+                            Ajukan Janji
+                        </button>
+                    </div>
                 </div>
-
-                <div class="form-group mb-3">
-                    <label>Biaya Pemeriksaan</label>
-                    <input type="text" class="form-control" value="Rp 150.000" readonly>
-                </div>
-
-                <button type="submit" class="btn btn-primary float-end">Ajukan Janji</button>
             </form>
         </div>
     </div>
-</div>
-
-<script>
-    const selectObats = document.querySelector('select[name="obats[]"]');
-    const totalBiayaField = document.getElementById('total_biaya');
-
-    selectObats.addEventListener('change', function () {
-        const selectedOptions = [...this.selectedOptions];
-        const hargaObat = selectedOptions.reduce((sum, opt) => {
-            return sum + parseInt(opt.dataset.harga);
-        }, 0);
-
-        const biayaPeriksa = 150000;
-        const total = biayaPeriksa + hargaObat;
-        totalBiayaField.value = "Rp " + total.toLocaleString('id-ID');
-    });
-</script>
 @endsection
