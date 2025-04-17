@@ -25,14 +25,17 @@
         <div class="form-container">
             <form action="{{ route('dokter.memeriksa.store') }}" method="POST">
                 @csrf
+
+                <input type="hidden" name="id" value="{{ $periksas->id ?? '' }}">
                 <div class="form-row">
                     <div class="form-column">
                         <div class="form-group">
                             <label>Nama Pasien</label>
                             <div class="input-wrapper patient">
-                                @if(isset($periksas))
+                                @if (isset($periksas))
                                     <input type="hidden" name="id_pasien" value="{{ $periksas->id_pasien }}">
-                                    <input type="text" class="form-control" value="{{ $periksas->pasien->nama }}" readonly>
+                                    <input type="text" class="form-control" value="{{ $periksas->pasien->nama }}"
+                                        readonly>
                                 @else
                                     <select name="id_pasien" id="id_pasien" class="form-control" required>
                                         <option value="">Pilih Pasien</option>
@@ -68,7 +71,8 @@
 
                         <div class="form-column">
                             <div class="form-group">
-                                <label>Obat yang Diberikan</label>
+                                <label><i class="fas fa-pills" style="margin-right: 8px; color: #1e88e5;"></i>Obat yang
+                                    Diberikan</label>
                                 <div class="input-wrapper fee">
                                     <select name="obats[]" id="obats" class="form-control" multiple required>
                                         @foreach ($obats as $obat)
@@ -77,8 +81,23 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    <i class="fas fa-capsules"></i>
                                 </div>
-                                <p class="input-help mt-2">Pilih obat yang ingin diberikan pada pasien.</p>
+                                <p class="input-help mt-2"><i class="fas fa-info-circle"
+                                        style="margin-right: 5px;"></i>Pilih obat yang ingin diberikan pada pasien.
+                                </p>
+                                <!-- Preview area untuk obat yang dipilih -->
+                                <div class="input-wrapper fee">
+                                    <div class="selected-medicines" id="selectedMedicines" style="display: none;">
+                                        <h4><i class="fas fa-clipboard-list"></i> Obat yang Dipilih</h4>
+                                        <ul class="medicine-list" id="medicineList">
+                                            <!-- List akan diisi dengan JavaScript -->
+                                        </ul>
+                                        <div style="text-align: right; margin-top: 10px; font-weight: 500;">
+                                            Total: <span id="totalHarga" style="color: #1e88e5;">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -102,6 +121,14 @@
                             </div>
                             <p class="input-help">Jelaskan keluhan atau hasil pemeriksaan pasien secara detail</p>
                         </div>
+                        <div class="form-group">
+                            <label for="status" class="d-block">Status Pemeriksaan</label>
+                            <div class="form-check">
+                                <input type="checkbox" name="status" id="status" class="form-check-input"
+                                    value="selesai">
+                            </div>
+                            <p class="input-help">Centang jika pemeriksaan ini sudah selesai</p>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -115,8 +142,10 @@
             </form>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const selectObats = document.querySelector("#obats");
             const totalBiayaField = document.querySelector("#total_biaya");
 
@@ -124,14 +153,14 @@
             const biayaPeriksa = 150000;
 
             // Fungsi untuk menghitung total biaya
-            selectObats.addEventListener("change", function () {
+            selectObats.addEventListener("change", function() {
                 let totalObat = 0;
 
                 // Mendapatkan semua opsi yang dipilih
                 const selectedOptions = [...this.selectedOptions];
 
                 // Menghitung total harga obat
-                selectedOptions.forEach(function (option) {
+                selectedOptions.forEach(function(option) {
                     totalObat += parseInt(option.dataset.harga);
                 });
 
@@ -142,6 +171,48 @@
                 totalBiayaField.value = "Rp " + totalBiaya.toLocaleString('id-ID');
             });
         });
+        $(document).ready(function() {
+            // Inisialisasi Select2
 
+
+            // Update preview area saat obat dipilih
+            $('#obats').on('change', function() {
+                updateSelectedMedicines();
+            });
+
+            function updateSelectedMedicines() {
+                const selectedOptions = $('#obats option:selected');
+                const medicineList = $('#medicineList');
+                let totalHarga = 0;
+
+                medicineList.empty();
+
+                if (selectedOptions.length > 0) {
+                    $('#selectedMedicines').show();
+
+                    selectedOptions.each(function() {
+                        const obatId = $(this).val();
+                        const obatNama = $(this).text().trim();
+                        const obatHarga = parseInt($(this).data('harga'));
+                        totalHarga += obatHarga;
+
+                        const listItem = $('<li class="medicine-item"></li>');
+                        listItem.append(`
+                            <span class="medicine-name">${obatNama}</span>
+                            <span class="medicine-price">
+                                Rp ${obatHarga.toLocaleString('id-ID')}
+                                <span class="medicine-badge">1x</span>
+                            </span>
+                        `);
+
+                        medicineList.append(listItem);
+                    });
+
+                    $('#totalHarga').text(`Rp ${totalHarga.toLocaleString('id-ID')}`);
+                } else {
+                    $('#selectedMedicines').hide();
+                }
+            }
+        });
     </script>
 @endsection

@@ -21,6 +21,7 @@
                         <th>Catatan</th>
                         <th>Total Biaya</th>
                         <th>Aksi</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,10 +32,18 @@
                             <td>{{ $periksa->catatan ?? '-' }}</td>
                             <td>Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}</td>
                             <td>
-                                <a href="{{ route('dokter.memeriksa.create', ['id' => $periksa->id]) }}"
-                                    class="btn btn-sm btn-success">
+                                <a href="{{ route('dokter.memeriksa.create', ['id' => $periksa->id]) }}" class="action-btn">
                                     <i class="fas fa-notes-medical"></i> Mulai Periksa
                                 </a>
+                            </td>
+                            <td>
+                                @if ($periksa->status == 'selesai')
+                                    <span class="status completed">Selesai</span>
+                                @elseif ($periksa->status == 'menunggu')
+                                    <span class="status pending">Menunggu</span>
+                                @else
+                                    <span class="status unknown">-</span>
+                                @endif
                             </td>
                         </tr>
                     @empty
