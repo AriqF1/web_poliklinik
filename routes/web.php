@@ -21,7 +21,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 // =========================
 Route::prefix('pasien')
     ->name('pasien.')
-    ->middleware(['auth', 'role:pasien']) // 👈 Tambahkan ini
+    ->middleware(['auth', 'role:pasien'])
     ->group(function () {
         Route::get('/dashboard', [PasienController::class, 'index'])->name('index');
         Route::get('/periksa', [PeriksaController::class, 'index'])->name('periksa');
@@ -36,7 +36,7 @@ Route::prefix('pasien')
 // =========================
 Route::prefix('dokter')
     ->name('dokter.')
-    ->middleware(['auth', 'role:dokter']) // 👈 Tambahkan ini
+    ->middleware(['auth', 'role:dokter'])
     ->group(function () {
         Route::get('/dashboard', [DokterController::class, 'index'])->name('index');
 

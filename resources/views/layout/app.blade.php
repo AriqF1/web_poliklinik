@@ -14,8 +14,8 @@
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
-            @if(auth()->check())
-                @if(auth()->user()->role === 'pasien')
+            @if (auth()->check())
+                @if (auth()->user()->role === 'pasien')
                     <div class="sidebar-header">
                         <div class="sidebar-brand">
                             <i class="fas fa-heartbeat"></i>
@@ -23,11 +23,13 @@
                         </div>
                     </div>
                     <div class="sidebar-menu">
-                        <a href="{{ Route('pasien.index') }}" class="menu-item active">
+                        <a href="{{ Route('pasien.index') }}"
+                            class="menu-item {{ request()->routeIs('pasien.index') ? 'active' : '' }}">
                             <i class="fas fa-chart-line"></i>
                             <span>Dashboard</span>
                         </a>
-                        <a href="{{ Route('pasien.periksa') }}" class="menu-item">
+                        <a href="{{ Route('pasien.periksa') }}"
+                            class="menu-item {{ request()->routeIs('pasien.periksa') ? 'active' : '' }}">
                             <i class="fas fa-stethoscope"></i>
                             <span>Periksa</span>
                         </a>
@@ -38,7 +40,8 @@
                         </a>
 
                         <!-- Hidden Logout Form -->
-                        <form id="logout-form" action="{{ route('pasien.logout') }}" method="POST" style="display: none;">
+                        <form id="logout-form" action="{{ route('pasien.logout') }}" method="POST"
+                            style="display: none;">
                             @csrf
                         </form>
                     </div>
@@ -50,15 +53,18 @@
                         </div>
                     </div>
                     <div class="sidebar-menu">
-                        <a href="{{ Route('dokter.index') }}" class="menu-item active">
+                        <a href="{{ Route('dokter.index') }}"
+                            class="menu-item {{ request()->routeIs('dokter.index') ? 'active' : '' }}">
                             <i class="fas fa-chart-line"></i>
                             <span>Dashboard</span>
                         </a>
-                        <a href="{{ Route('dokter.memeriksa') }}" class="menu-item">
+                        <a href="{{ Route('dokter.memeriksa') }}"
+                            class="menu-item {{ request()->routeIs('dokter.memeriksa') ? 'active' : '' }}">
                             <i class="fas fa-stethoscope"></i>
                             <span>Memeriksa</span>
                         </a>
-                        <a href="{{ Route('dokter.obat') }}" class="menu-item">
+                        <a href="{{ Route('dokter.obat') }}"
+                            class="menu-item {{ request()->routeIs('dokter.obat') ? 'active' : '' }}">
                             <i class="fas fa-pills"></i>
                             <span>Obat</span>
                         </a>
@@ -69,7 +75,8 @@
                         </a>
 
                         <!-- Hidden Logout Form -->
-                        <form id="logout-form" action="{{ route('dokter.logout') }}" method="POST" style="display: none;">
+                        <form id="logout-form" action="{{ route('dokter.logout') }}" method="POST"
+                            style="display: none;">
                             @csrf
                         </form>
                     </div>
@@ -94,7 +101,7 @@
                 @yield('content')
             </div>
 
-            @if($showTables)
+            @if ($showTables)
                 <div class="dashboard-tables">
                     <div class="table-container">
                         @yield('table')
@@ -105,7 +112,7 @@
                 </div>
             @endif
 
-            @if($showFullscreen)
+            @if ($showFullscreen)
                 <div class="fullscreen-content">
                     @yield('fullscreen')
                 </div>
@@ -114,26 +121,6 @@
             <!-- Dashboard Tables -->
         </div>
     </div>
-
-    <script>
-        // Simple navigation functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const menuItems = document.querySelectorAll('.menu-item');
-
-            menuItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    // Remove active class from all menu items
-                    menuItems.forEach(i => i.classList.remove('active'));
-
-                    // Add active class to clicked item
-                    this.classList.add('active');
-
-                    // Here you would typically handle navigation or view changes
-                    // For demonstration purposes, we're just updating the active state
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
