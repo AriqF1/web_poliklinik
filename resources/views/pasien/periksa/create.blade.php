@@ -7,6 +7,15 @@
 
 @section('title', 'Buat Pemeriksaan')
 @section('dashboard', 'Pasien')
+@section('header')
+    <h1>Dashboard Pasien</h1>
+    <div class="user-info">
+        <div class="user-avatar">
+            <i class="fas fa-user-md"></i>
+        </div>
+        <div class="user-name">{{ $pasien->nama }}</div>
+    </div>
+@endsection
 @section('fullscreen')
     <div class="fullscreen-form">
         <div class="form-header">
@@ -35,8 +44,9 @@
                         <div class="form-group">
                             <label for="tgl_periksa">Tanggal Pemeriksaan</label>
                             <div class="input-wrapper">
-                                <input type="date" name="tgl_periksa" id="tgl_periksa" required>
-                                <i class="fas fa-calendar-alt"></i>
+                                <input type="date" name="tgl_periksa" id="tgl_periksa"
+                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                             </div>
                         </div>
                     </div>

@@ -27,11 +27,20 @@
         <tbody>
             @foreach ($periksas as $periksa)
                 <tr>
-                    <td>{{ $periksa->pasien->nama}}</td>
+                    <td>{{ $periksa->pasien->nama }}</td>
                     <td>{{ $periksa->tgl_periksa }}</td>
-                    <td><span class="status pending">Menunggu</span></td>
+                    <td>
+                        @if ($periksa->status == 'selesai')
+                            <span class="status completed">Selesai</span>
+                        @elseif ($periksa->status == 'menunggu')
+                            <span class="status pending">Menunggu</span>
+                        @else
+                            <span class="status unknown">-</span>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
+
         </tbody>
     </table>
 @endsection
@@ -39,22 +48,32 @@
     <div class="table-header">
         <div class="table-title">Riwayat Pemberian Obat</div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th>Nama Obat</th>
-                <th>Kemasan</th>
-                <th>Harga</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($obats as $obat)
+
+    @php
+        $grouped = $obats->groupBy(function ($item) {
+            return \Carbon\Carbon::parse($item->periksa->tgl_periksa)->format('d M Y');
+        });
+    @endphp
+
+    @foreach ($grouped as $tanggal => $items)
+        <h4 style="margin-top: 20px;">{{ $tanggal }}</h4>
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ $obat->nama_obat }}</td>
-                    <td>{{ $obat->kemasan  }}</td>
-                    <td>{{ 'Rp ' . number_format($obat->harga, 0, ',', '.') }}</td>
+                    <th>Nama Obat</th>
+                    <th>Kemasan</th>
+                    <th>Harga</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($items as $detail)
+                    <tr>
+                        <td>{{ $detail->obat->nama_obat }}</td>
+                        <td>{{ $detail->obat->kemasan }}</td>
+                        <td>{{ 'Rp ' . number_format($detail->obat->harga, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endforeach
 @endsection

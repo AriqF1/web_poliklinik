@@ -35,7 +35,7 @@
                 <i class="fas fa-calendar-check"></i>
             </div>
         </div>
-        <div class="card-value">8</div>
+        <div class="card-value">{{ $janjiTemu }}</div>
         <div class="card-label">Janji temu</div>
     </div>
 
@@ -46,7 +46,7 @@
                 <i class="fas fa-check-circle"></i>
             </div>
         </div>
-        <div class="card-value">5</div>
+        <div class="card-value">{{ $jumlahPemeriksaan }}</div>
         <div class="card-label">Total Periksamu</div>
     </div>
 @endsection
