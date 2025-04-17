@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -16,7 +17,8 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // Cek apakah user sudah login
+        // fungsi untuk mengecek apakah user sudah login
+        // jika belum login, redirect ke halaman login
         if (!Auth::check()) {
             return redirect()->route('login');
         }
@@ -26,7 +28,7 @@ class RoleMiddleware
             return redirect()->route('login')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
-        // Jika role sesuai, lanjutkan request
+        // Jika role user sesuai, maka lanjutkan request
         return $next($request);
     }
 }
