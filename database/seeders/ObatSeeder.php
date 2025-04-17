@@ -10,7 +10,7 @@ class ObatSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['nama_obat' => 'Paracetamol', 'kemasan' => 'Strip 10 Tablet', 'harga' => 8000],
+        ['nama_obat' => 'Paracetamol', 'kemasan' => 'Strip 10 Tablet', 'harga' => 8000],
             ['nama_obat' => 'Amoxicillin', 'kemasan' => 'Botol 100 ml', 'harga' => 15000],
             ['nama_obat' => 'Ibuprofen', 'kemasan' => 'Box 20 Tablet', 'harga' => 25000],
             ['nama_obat' => 'Cetirizine', 'kemasan' => 'Sachet 5gr', 'harga' => 5000],

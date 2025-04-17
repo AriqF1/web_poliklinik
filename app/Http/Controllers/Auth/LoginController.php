@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('Auth.login'); // Ganti sesuai view login kamu
+        return view('Auth.login');
     }
 
     public function login(Request $request)

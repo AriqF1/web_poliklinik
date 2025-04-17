@@ -12,6 +12,7 @@ class Periksa extends Model
         'tgl_periksa',
         'catatan',
         'biaya_periksa',
+        'status',
     ];
 
     public function pasien()

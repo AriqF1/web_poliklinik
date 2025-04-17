@@ -11,13 +11,13 @@ class ObatController extends Controller
 {
     public function index()
     {
+        $dokter = Auth::user();
         $obats = Obat::latest()->paginate(10);
-        return view('dokter.obat.obat', compact('obats'));
+        return view('dokter.obat.obat', compact('obats', 'dokter'));
     }
     public function create()
     {
-        $pasiens = User::where('role', 'pasien')->get();
-        return view('dokter.obat.create', compact('pasiens'));
+        return view('dokter.obat.create');
     }
     public function store(Request $request)
     {

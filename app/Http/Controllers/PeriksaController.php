@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class PeriksaController extends Controller
 {
     public function index()
     {
-        $pasien = auth()->user();
+        $pasien = Auth::user();
         $periksaIds = Periksa::where('id_pasien', $pasien->id)->pluck('id');
         $obats = DetailPeriksa::whereIn('id_periksa', $periksaIds)->with('obat')->get();
         $periksas = Periksa::where('id_pasien', $pasien->id)->latest()->paginate(10);
@@ -23,7 +24,7 @@ class PeriksaController extends Controller
 
     public function create()
     {
-        $pasien = auth()->user();
+        $pasien = Auth::user();
         $dokters = User::where('role', 'dokter')->get();
         return view('pasien.periksa.create', compact('dokters', 'pasien'));
     }
@@ -39,14 +40,14 @@ class PeriksaController extends Controller
         $biaya_periksa = 150000;
 
         $periksa = Periksa::create([
-            'id_pasien' => auth()->id(),
+            'id_pasien' => Auth::user()->id,
             'id_dokter' => $request->id_dokter,
             'tgl_periksa' => $request->tgl_periksa,
             'catatan' => $request->catatan,
             'biaya_periksa' => $biaya_periksa,
+            'status' => 'menunggu',
         ]);
 
         return redirect()->route('pasien.periksa')->with('success', 'Permintaan pemeriksaan berhasil dikirim.');
     }
 }
-

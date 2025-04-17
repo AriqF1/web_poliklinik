@@ -1,6 +1,6 @@
 @php
-    $showTables = true;
-    $showFullscreen = true;
+    $showTables = false;
+    $showFullscreen = false;
 @endphp
 
 
@@ -21,7 +21,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <div class="card-title">Pasien</div>
+            <div class="card-title">Pasien Anda</div>
             <div class="card-icon">
                 <i class="fas fa-users"></i>
             </div>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="card-value">{{ $janjiTemu }}</div>
-        <div class="card-label">Janji temu</div>
+        <div class="card-label">Janji temu </div>
     </div>
 
     <div class="card">
@@ -48,8 +48,8 @@
                 <i class="fas fa-check-circle"></i>
             </div>
         </div>
-        <div class="card-value">5</div>
-        <div class="card-label">Total Periksamu</div>
+        <div class="card-value">{{ $jumlahPemeriksaan }}</div>
+        <div class="card-label">Total Pemeriksaan Selesai</div>
     </div>
 @endsection
 @section('table')
