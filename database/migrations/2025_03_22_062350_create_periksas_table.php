@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('tgl_periksa');
             $table->text('catatan')->nullable();
             $table->decimal('biaya_periksa', 10, 2);
+            $table->enum('status', ['menunggu', 'selesai'])->default('menunggu');
             $table->timestamps();
 
             // Foreign key constraints
