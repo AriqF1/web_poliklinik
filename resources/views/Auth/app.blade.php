@@ -151,6 +151,63 @@
                 padding: 30px;
             }
         }
+
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        .input-group-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            text-align: center;
+            white-space: nowrap;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-right: none;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+
+        .input-group .form-control {
+            position: relative;
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+            margin-bottom: 0;
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        /* Untuk memperbaiki tampilan saat focus */
+        .input-group .form-control:focus {
+            z-index: 3;
+            box-shadow: none;
+            border-color: #80bdff;
+        }
+
+        .input-group-text i {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Tambahan style agar lebih menarik */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 
